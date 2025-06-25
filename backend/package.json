@@ -1,0 +1,64 @@
+{
+  "name": "charity-ledger-backend",
+  "version": "1.0.0",
+  "description": "Backend API for Charity Ledger - Localized Charity & Impact Funding Platform",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "test": "jest",
+    "lint": "eslint src/",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "helmet": "^6.1.5",
+    "morgan": "^1.10.0",
+    "dotenv": "^16.0.3",
+    "mongoose": "^7.0.3",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.0",
+    "express-rate-limit": "^6.7.0",
+    "express-validator": "^6.15.0",
+    "multer": "^1.4.5-lts.1",
+    "cloudinary": "^1.35.0",
+    "nodemailer": "^6.9.1",
+    "socket.io": "^4.6.1",
+    "redis": "^4.6.6",
+    "axios": "^1.3.4",
+    "compression": "^1.7.4",
+    "express-slow-down": "^1.6.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^4.6.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22",
+    "jest": "^29.5.0",
+    "supertest": "^6.3.3",
+    "eslint": "^8.38.0",
+    "@types/node": "^18.15.11",
+    "@types/express": "^4.17.17",
+    "@types/cors": "^2.8.13",
+    "@types/morgan": "^1.9.4",
+    "@types/bcryptjs": "^2.4.2",
+    "@types/jsonwebtoken": "^9.0.1",
+    "@types/multer": "^1.4.7",
+    "@types/nodemailer": "^6.4.8",
+    "@types/compression": "^1.7.2",
+    "typescript": "^5.0.4"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "keywords": [
+    "charity",
+    "blockchain",
+    "sui",
+    "impact",
+    "funding",
+    "transparency"
+  ],
+  "author": "Charity Ledger Team",
+  "license": "MIT"
+} 
