@@ -8,42 +8,42 @@ import {
   IconButton,
   Drawer,
   List,
-  ListItemButton,
-  ListItemIcon,
+  ListItem,
   ListItemText,
+  ListItemIcon,
   Avatar,
+  Badge,
   Menu,
   MenuItem,
+  Divider,
+  Chip,
   useTheme,
   useMediaQuery,
 } from '@mui/material';
 import {
   Menu as MenuIcon,
   Home,
-  Business,
+  Explore,
   Add,
   Person,
-  VerifiedUser,
+  Notifications,
+  AccountBalance,
   Map,
-  AccountBalanceWallet,
+  Logout,
+  Settings,
+  Wallet,
+  TrendingUp,
 } from '@mui/icons-material';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 const Navbar: React.FC = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [notificationAnchor, setNotificationAnchor] = useState<null | HTMLElement>(null);
   const navigate = useNavigate();
   const location = useLocation();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-
-  const menuItems = [
-    { text: 'Home', icon: <Home />, path: '/' },
-    { text: 'Projects', icon: <Business />, path: '/projects' },
-    { text: 'Create Project', icon: <Add />, path: '/create-project' },
-    { text: 'Impact Map', icon: <Map />, path: '/impact-map' },
-    { text: 'Validator Dashboard', icon: <VerifiedUser />, path: '/validator' },
-  ];
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -57,134 +57,203 @@ const Navbar: React.FC = () => {
     setAnchorEl(null);
   };
 
-  const handleNavigation = (path: string) => {
-    navigate(path);
-    setMobileOpen(false);
+  const handleNotificationMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setNotificationAnchor(event.currentTarget);
   };
 
+  const handleNotificationMenuClose = () => {
+    setNotificationAnchor(null);
+  };
+
+  const isActive = (path: string) => location.pathname === path;
+
+  const menuItems = [
+    { text: 'Home', icon: <Home />, path: '/' },
+    { text: 'Projects', icon: <Explore />, path: '/projects' },
+    { text: 'Impact Map', icon: <Map />, path: '/impact-map' },
+    { text: 'Validator Dashboard', icon: <AccountBalance />, path: '/validator-dashboard' },
+  ];
+
   const drawer = (
-    <Box>
-      <Box sx={{ p: 2, borderBottom: 1, borderColor: 'divider' }}>
-        <Typography variant="h6" color="primary">
+    <Box sx={{ width: 280, pt: 2 }}>
+      <Box sx={{ px: 3, pb: 2 }}>
+        <Typography variant="h6" color="primary" fontWeight={700}>
           Charity Ledger
         </Typography>
+        <Typography variant="body2" color="text.secondary">
+          Transparent Impact Funding
+        </Typography>
       </Box>
+      <Divider />
       <List>
         {menuItems.map((item) => (
-          <ListItemButton
+          <ListItem
             key={item.text}
-            onClick={() => handleNavigation(item.path)}
-            selected={location.pathname === item.path}
+            button
+            onClick={() => {
+              navigate(item.path);
+              setMobileOpen(false);
+            }}
             sx={{
-              '&.Mui-selected': {
-                backgroundColor: 'primary.light',
-                color: 'primary.contrastText',
-                '&:hover': {
-                  backgroundColor: 'primary.main',
-                },
+              mx: 1,
+              borderRadius: 2,
+              mb: 0.5,
+              backgroundColor: isActive(item.path) ? 'primary.main' : 'transparent',
+              color: isActive(item.path) ? 'white' : 'text.primary',
+              '&:hover': {
+                backgroundColor: isActive(item.path) ? 'primary.dark' : 'action.hover',
               },
             }}
           >
-            <ListItemIcon
-              sx={{
-                color: location.pathname === item.path ? 'primary.contrastText' : 'inherit',
-              }}
-            >
+            <ListItemIcon sx={{ color: 'inherit', minWidth: 40 }}>
               {item.icon}
             </ListItemIcon>
             <ListItemText primary={item.text} />
-          </ListItemButton>
+          </ListItem>
         ))}
       </List>
+      <Divider sx={{ my: 2 }} />
+      <Box sx={{ px: 3, pb: 2 }}>
+        <Button
+          variant="contained"
+          fullWidth
+          startIcon={<Add />}
+          onClick={() => {
+            navigate('/create-project');
+            setMobileOpen(false);
+          }}
+          sx={{ mb: 2 }}
+        >
+          Create Project
+        </Button>
+        <Button
+          variant="outlined"
+          fullWidth
+          startIcon={<Wallet />}
+          onClick={() => {
+            // Connect wallet logic
+            setMobileOpen(false);
+          }}
+        >
+          Connect Wallet
+        </Button>
+      </Box>
     </Box>
   );
 
   return (
     <>
-      <AppBar position="sticky" elevation={1}>
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { md: 'none' } }}
-          >
-            <MenuIcon />
-          </IconButton>
+      <AppBar
+        position="fixed"
+        sx={{
+          background: 'rgba(255, 255, 255, 0.95)',
+          backdropFilter: 'blur(20px)',
+          borderBottom: '1px solid rgba(0, 0, 0, 0.06)',
+          boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
+        }}
+      >
+        <Toolbar sx={{ justifyContent: 'space-between' }}>
+          {/* Logo and Navigation */}
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              edge="start"
+              onClick={handleDrawerToggle}
+              sx={{ mr: 2, display: { md: 'none' } }}
+            >
+              <MenuIcon />
+            </IconButton>
+            
+            <Typography
+              variant="h6"
+              component="div"
+              sx={{
+                color: 'primary.main',
+                fontWeight: 700,
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 1,
+              }}
+              onClick={() => navigate('/')}
+            >
+              <TrendingUp sx={{ fontSize: 28 }} />
+              Charity Ledger
+            </Typography>
 
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{ flexGrow: 1, cursor: 'pointer' }}
-            onClick={() => navigate('/')}
-          >
-            Charity Ledger
-          </Typography>
-
-          {/* Desktop Navigation */}
-          <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center', gap: 2 }}>
-            {menuItems.map((item) => (
-              <Button
-                key={item.text}
-                color="inherit"
-                startIcon={item.icon}
-                onClick={() => handleNavigation(item.path)}
-                sx={{
-                  '&:hover': {
-                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                  },
-                }}
-              >
-                {item.text}
-              </Button>
-            ))}
+            {/* Desktop Navigation */}
+            <Box sx={{ display: { xs: 'none', md: 'flex' }, ml: 4, gap: 1 }}>
+              {menuItems.map((item) => (
+                <Button
+                  key={item.text}
+                  color="inherit"
+                  startIcon={item.icon}
+                  onClick={() => navigate(item.path)}
+                  sx={{
+                    color: isActive(item.path) ? 'primary.main' : 'text.primary',
+                    backgroundColor: isActive(item.path) ? 'primary.50' : 'transparent',
+                    borderRadius: 2,
+                    px: 2,
+                    '&:hover': {
+                      backgroundColor: isActive(item.path) ? 'primary.100' : 'action.hover',
+                    },
+                  }}
+                >
+                  {item.text}
+                </Button>
+              ))}
+            </Box>
           </Box>
 
+          {/* Right side actions */}
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <Button
-              variant="outlined"
-              color="inherit"
-              startIcon={<AccountBalanceWallet />}
-              sx={{ borderColor: 'rgba(255, 255, 255, 0.5)' }}
-            >
-              Connect Wallet
-            </Button>
-            
+            {/* Notifications */}
             <IconButton
-              onClick={handleProfileMenuOpen}
-              sx={{ ml: 1 }}
+              color="inherit"
+              onClick={handleNotificationMenuOpen}
+              sx={{ color: 'text.primary' }}
             >
-              <Avatar sx={{ width: 32, height: 32 }}>
-                <Person />
-              </Avatar>
+              <Badge badgeContent={3} color="error">
+                <Notifications />
+              </Badge>
             </IconButton>
-            <Menu
-              anchorEl={anchorEl}
-              open={Boolean(anchorEl)}
-              onClose={handleProfileMenuClose}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'right',
-              }}
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
+
+            {/* Create Project Button */}
+            <Button
+              variant="contained"
+              startIcon={<Add />}
+              onClick={() => navigate('/create-project')}
+              sx={{ display: { xs: 'none', sm: 'flex' } }}
             >
-              <MenuItem onClick={() => { handleNavigation('/profile'); handleProfileMenuClose(); }}>
-                <ListItemIcon>
-                  <Person fontSize="small" />
-                </ListItemIcon>
-                Profile
-              </MenuItem>
-              <MenuItem onClick={() => { handleNavigation('/validator'); handleProfileMenuClose(); }}>
-                <ListItemIcon>
-                  <VerifiedUser fontSize="small" />
-                </ListItemIcon>
-                Validator Dashboard
-              </MenuItem>
-            </Menu>
+              Create Project
+            </Button>
+
+            {/* User Profile */}
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, ml: 1 }}>
+              <Chip
+                label="Connected"
+                size="small"
+                color="success"
+                sx={{ display: { xs: 'none', sm: 'flex' } }}
+              />
+              <IconButton
+                onClick={handleProfileMenuOpen}
+                sx={{ p: 0.5 }}
+              >
+                <Avatar
+                  sx={{
+                    width: 40,
+                    height: 40,
+                    bgcolor: 'primary.main',
+                    fontSize: '1rem',
+                    fontWeight: 600,
+                  }}
+                >
+                  JD
+                </Avatar>
+              </IconButton>
+            </Box>
           </Box>
         </Toolbar>
       </AppBar>
@@ -194,16 +263,93 @@ const Navbar: React.FC = () => {
         variant="temporary"
         open={mobileOpen}
         onClose={handleDrawerToggle}
-        ModalProps={{
-          keepMounted: true, // Better open performance on mobile.
-        }}
+        ModalProps={{ keepMounted: true }}
         sx={{
           display: { xs: 'block', md: 'none' },
-          '& .MuiDrawer-paper': { boxSizing: 'border-box', width: 240 },
+          '& .MuiDrawer-paper': {
+            boxSizing: 'border-box',
+            width: 280,
+            background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)',
+          },
         }}
       >
         {drawer}
       </Drawer>
+
+      {/* Profile Menu */}
+      <Menu
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={handleProfileMenuClose}
+        PaperProps={{
+          sx: {
+            mt: 1,
+            minWidth: 200,
+            borderRadius: 2,
+            boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+          },
+        }}
+      >
+        <MenuItem onClick={() => { navigate('/profile'); handleProfileMenuClose(); }}>
+          <ListItemIcon>
+            <Person fontSize="small" />
+          </ListItemIcon>
+          Profile
+        </MenuItem>
+        <MenuItem onClick={handleProfileMenuClose}>
+          <ListItemIcon>
+            <Settings fontSize="small" />
+          </ListItemIcon>
+          Settings
+        </MenuItem>
+        <Divider />
+        <MenuItem onClick={handleProfileMenuClose}>
+          <ListItemIcon>
+            <Logout fontSize="small" />
+          </ListItemIcon>
+          Disconnect
+        </MenuItem>
+      </Menu>
+
+      {/* Notifications Menu */}
+      <Menu
+        anchorEl={notificationAnchor}
+        open={Boolean(notificationAnchor)}
+        onClose={handleNotificationMenuClose}
+        PaperProps={{
+          sx: {
+            mt: 1,
+            minWidth: 300,
+            borderRadius: 2,
+            boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+          },
+        }}
+      >
+        <MenuItem>
+          <Box>
+            <Typography variant="subtitle2">Milestone Completed</Typography>
+            <Typography variant="body2" color="text.secondary">
+              Water project milestone 2 has been verified
+            </Typography>
+          </Box>
+        </MenuItem>
+        <MenuItem>
+          <Box>
+            <Typography variant="subtitle2">New Project</Typography>
+            <Typography variant="body2" color="text.secondary">
+              Education project in Kenya needs validators
+            </Typography>
+          </Box>
+        </MenuItem>
+        <MenuItem>
+          <Box>
+            <Typography variant="subtitle2">Funds Released</Typography>
+            <Typography variant="body2" color="text.secondary">
+              $5,000 released for solar energy project
+            </Typography>
+          </Box>
+        </MenuItem>
+      </Menu>
     </>
   );
 };

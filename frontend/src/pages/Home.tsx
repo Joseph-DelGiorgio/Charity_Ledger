@@ -11,7 +11,14 @@ import {
   Chip,
   LinearProgress,
   Paper,
-  useTheme,
+  Avatar,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Divider,
+  IconButton,
+  Tooltip,
 } from '@mui/material';
 import {
   TrendingUp,
@@ -20,12 +27,20 @@ import {
   AttachMoney,
   VerifiedUser,
   Timeline,
+  ArrowForward,
+  Star,
+  Favorite,
+  Share,
+  PlayArrow,
+  CheckCircle,
+  Security,
+  Visibility,
+  Speed,
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
-  const theme = useTheme();
 
   const featuredProjects = [
     {
@@ -39,6 +54,8 @@ const Home: React.FC = () => {
       image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=250&fit=crop',
       milestones: 3,
       validators: 5,
+      rating: 4.8,
+      daysLeft: 15,
     },
     {
       id: 2,
@@ -51,6 +68,8 @@ const Home: React.FC = () => {
       image: 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=400&h=250&fit=crop',
       milestones: 4,
       validators: 7,
+      rating: 4.9,
+      daysLeft: 8,
     },
     {
       id: 3,
@@ -63,16 +82,41 @@ const Home: React.FC = () => {
       image: 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400&h=250&fit=crop',
       milestones: 5,
       validators: 6,
+      rating: 4.7,
+      daysLeft: 22,
     },
   ];
 
   const impactStats = [
-    { label: 'Projects Funded', value: '127', icon: <TrendingUp />, color: '#1976d2' },
-    { label: 'People Impacted', value: '45K+', icon: <People />, color: '#2e7d32' },
-    { label: 'Countries Served', value: '23', icon: <LocationOn />, color: '#ed6c02' },
-    { label: 'Total Funding', value: '$2.3M', icon: <AttachMoney />, color: '#9c27b0' },
-    { label: 'Active Validators', value: '156', icon: <VerifiedUser />, color: '#d32f2f' },
-    { label: 'Milestones Completed', value: '892', icon: <Timeline />, color: '#7b1fa2' },
+    { label: 'Projects Funded', value: '127', icon: <TrendingUp />, color: '#2563eb', change: '+12%' },
+    { label: 'People Impacted', value: '45K+', icon: <People />, color: '#10b981', change: '+8%' },
+    { label: 'Countries Served', value: '23', icon: <LocationOn />, color: '#f59e0b', change: '+3' },
+    { label: 'Total Funding', value: '$2.3M', icon: <AttachMoney />, color: '#8b5cf6', change: '+15%' },
+    { label: 'Active Validators', value: '156', icon: <VerifiedUser />, color: '#ef4444', change: '+5%' },
+    { label: 'Milestones Completed', value: '892', icon: <Timeline />, color: '#06b6d4', change: '+23%' },
+  ];
+
+  const features = [
+    {
+      icon: <Security />,
+      title: 'Secure & Transparent',
+      description: 'All transactions and fund releases are recorded on the blockchain for complete transparency.',
+    },
+    {
+      icon: <VerifiedUser />,
+      title: 'Local Validators',
+      description: 'Community-based validators ensure projects are completed as promised on the ground.',
+    },
+    {
+      icon: <Timeline />,
+      title: 'Milestone-Based',
+      description: 'Funds are released only when project milestones are verified and completed.',
+    },
+    {
+      icon: <Speed />,
+      title: 'Real-Time Tracking',
+      description: 'Track project progress and fund usage in real-time with detailed analytics.',
+    },
   ];
 
   return (
@@ -82,29 +126,54 @@ const Home: React.FC = () => {
         sx={{
           background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
           color: 'white',
-          py: 8,
+          py: { xs: 6, md: 12 },
           position: 'relative',
           overflow: 'hidden',
+          '&::before': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: 'url("data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.05"%3E%3Ccircle cx="30" cy="30" r="2"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")',
+            opacity: 0.3,
+          },
         }}
       >
         <Container maxWidth="lg">
           <Grid container spacing={4} alignItems="center">
             <Grid item xs={12} md={6}>
               <Typography
-                variant="h2"
+                variant="h1"
                 component="h1"
                 gutterBottom
-                sx={{ fontWeight: 700, mb: 3 }}
+                sx={{ 
+                  fontWeight: 700, 
+                  mb: 3,
+                  fontSize: { xs: '2.5rem', md: '3.5rem' },
+                  lineHeight: 1.1,
+                }}
               >
                 Transparent Charity
                 <br />
-                <span style={{ color: '#ffd700' }}>Powered by Blockchain</span>
+                <span style={{ color: '#ffd700', textShadow: '0 2px 4px rgba(0,0,0,0.3)' }}>
+                  Powered by Blockchain
+                </span>
               </Typography>
-              <Typography variant="h6" sx={{ mb: 4, opacity: 0.9 }}>
+              <Typography 
+                variant="h5" 
+                sx={{ 
+                  mb: 4, 
+                  opacity: 0.9,
+                  lineHeight: 1.4,
+                  fontWeight: 400,
+                }}
+              >
                 See exactly where your donations go with real-time tracking, 
                 milestone-based fund releases, and local validator verification.
               </Typography>
-              <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+              <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', mb: 4 }}>
                 <Button
                   variant="contained"
                   size="large"
@@ -112,10 +181,19 @@ const Home: React.FC = () => {
                   sx={{
                     bgcolor: 'white',
                     color: 'primary.main',
-                    '&:hover': { bgcolor: 'grey.100' },
+                    px: 4,
+                    py: 1.5,
+                    fontSize: '1.1rem',
+                    fontWeight: 600,
+                    '&:hover': { 
+                      bgcolor: 'grey.100',
+                      transform: 'translateY(-2px)',
+                    },
+                    transition: 'all 0.2s ease-in-out',
                   }}
                 >
                   Explore Projects
+                  <ArrowForward sx={{ ml: 1 }} />
                 </Button>
                 <Button
                   variant="outlined"
@@ -124,11 +202,36 @@ const Home: React.FC = () => {
                   sx={{
                     borderColor: 'white',
                     color: 'white',
-                    '&:hover': { borderColor: 'grey.300', bgcolor: 'rgba(255,255,255,0.1)' },
+                    px: 4,
+                    py: 1.5,
+                    fontSize: '1.1rem',
+                    fontWeight: 600,
+                    '&:hover': { 
+                      borderColor: 'grey.300', 
+                      bgcolor: 'rgba(255,255,255,0.1)',
+                      transform: 'translateY(-2px)',
+                    },
+                    transition: 'all 0.2s ease-in-out',
                   }}
                 >
                   Create Project
                 </Button>
+              </Box>
+              
+              {/* Trust indicators */}
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 3, flexWrap: 'wrap' }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <CheckCircle sx={{ color: '#10b981' }} />
+                  <Typography variant="body2">Verified Projects</Typography>
+                </Box>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <Security sx={{ color: '#10b981' }} />
+                  <Typography variant="body2">Secure Transactions</Typography>
+                </Box>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <Visibility sx={{ color: '#10b981' }} />
+                  <Typography variant="body2">100% Transparent</Typography>
+                </Box>
               </Box>
             </Grid>
             <Grid item xs={12} md={6}>
@@ -136,32 +239,56 @@ const Home: React.FC = () => {
                 sx={{
                   background: 'rgba(255,255,255,0.1)',
                   borderRadius: 4,
-                  p: 3,
-                  backdropFilter: 'blur(10px)',
+                  p: 4,
+                  backdropFilter: 'blur(20px)',
+                  border: '1px solid rgba(255,255,255,0.2)',
                 }}
               >
-                <Typography variant="h5" gutterBottom>
+                <Typography variant="h5" gutterBottom sx={{ fontWeight: 600 }}>
                   How It Works
                 </Typography>
-                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                    <Box sx={{ bgcolor: 'white', borderRadius: '50%', p: 1, minWidth: 40, textAlign: 'center' }}>
-                      <Typography color="primary.main" fontWeight="bold">1</Typography>
-                    </Box>
-                    <Typography>Projects are created with clear milestones</Typography>
-                  </Box>
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                    <Box sx={{ bgcolor: 'white', borderRadius: '50%', p: 1, minWidth: 40, textAlign: 'center' }}>
-                      <Typography color="primary.main" fontWeight="bold">2</Typography>
-                    </Box>
-                    <Typography>Local validators verify progress on the ground</Typography>
-                  </Box>
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                    <Box sx={{ bgcolor: 'white', borderRadius: '50%', p: 1, minWidth: 40, textAlign: 'center' }}>
-                      <Typography color="primary.main" fontWeight="bold">3</Typography>
-                    </Box>
-                    <Typography>Funds are released automatically as milestones are completed</Typography>
-                  </Box>
+                <List sx={{ p: 0 }}>
+                  {[
+                    'Projects are created with clear milestones',
+                    'Local validators verify progress on the ground',
+                    'Funds are released automatically as milestones are completed'
+                  ].map((step, index) => (
+                    <ListItem key={index} sx={{ px: 0, py: 1 }}>
+                      <ListItemIcon sx={{ minWidth: 40 }}>
+                        <Avatar
+                          sx={{
+                            width: 32,
+                            height: 32,
+                            bgcolor: 'primary.main',
+                            fontSize: '0.875rem',
+                            fontWeight: 600,
+                          }}
+                        >
+                          {index + 1}
+                        </Avatar>
+                      </ListItemIcon>
+                      <ListItemText 
+                        primary={step}
+                        primaryTypographyProps={{
+                          sx: { fontWeight: 500, fontSize: '1rem' }
+                        }}
+                      />
+                    </ListItem>
+                  ))}
+                </List>
+                
+                <Box sx={{ mt: 3, textAlign: 'center' }}>
+                  <Button
+                    variant="outlined"
+                    startIcon={<PlayArrow />}
+                    sx={{
+                      borderColor: 'rgba(255,255,255,0.5)',
+                      color: 'white',
+                      '&:hover': { borderColor: 'white' },
+                    }}
+                  >
+                    Watch Demo
+                  </Button>
                 </Box>
               </Box>
             </Grid>
@@ -170,24 +297,31 @@ const Home: React.FC = () => {
       </Box>
 
       {/* Impact Statistics */}
-      <Container maxWidth="lg" sx={{ py: 6 }}>
-        <Typography variant="h3" component="h2" textAlign="center" gutterBottom>
-          Our Impact
-        </Typography>
-        <Typography variant="h6" textAlign="center" color="text.secondary" sx={{ mb: 6 }}>
-          Real results from transparent, blockchain-powered charitable giving
-        </Typography>
+      <Container maxWidth="lg" sx={{ py: 8 }}>
+        <Box sx={{ textAlign: 'center', mb: 6 }}>
+          <Typography variant="h2" component="h2" gutterBottom sx={{ fontWeight: 700 }}>
+            Our Impact
+          </Typography>
+          <Typography variant="h5" color="text.secondary" sx={{ maxWidth: 600, mx: 'auto' }}>
+            Real results from transparent, blockchain-powered charitable giving
+          </Typography>
+        </Box>
+        
         <Grid container spacing={3}>
           {impactStats.map((stat, index) => (
             <Grid item xs={12} sm={6} md={4} key={index}>
               <Paper
-                elevation={2}
+                elevation={0}
                 sx={{
-                  p: 3,
+                  p: 4,
                   textAlign: 'center',
                   borderRadius: 3,
-                  transition: 'transform 0.2s',
-                  '&:hover': { transform: 'translateY(-4px)' },
+                  border: '1px solid rgba(0,0,0,0.08)',
+                  transition: 'all 0.3s ease-in-out',
+                  '&:hover': { 
+                    transform: 'translateY(-8px)',
+                    boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+                  },
                 }}
               >
                 <Box
@@ -195,135 +329,334 @@ const Home: React.FC = () => {
                     display: 'inline-flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    width: 60,
-                    height: 60,
+                    width: 80,
+                    height: 80,
                     borderRadius: '50%',
-                    bgcolor: stat.color,
-                    color: 'white',
-                    mb: 2,
+                    bgcolor: `${stat.color}15`,
+                    color: stat.color,
+                    mb: 3,
                   }}
                 >
                   {stat.icon}
                 </Box>
-                <Typography variant="h4" fontWeight={700} gutterBottom>
+                <Typography variant="h3" fontWeight={700} gutterBottom sx={{ color: stat.color }}>
                   {stat.value}
                 </Typography>
-                <Typography variant="body1" color="text.secondary">
+                <Typography variant="h6" gutterBottom sx={{ fontWeight: 600 }}>
                   {stat.label}
                 </Typography>
+                <Chip
+                  label={stat.change}
+                  size="small"
+                  color="success"
+                  sx={{ fontWeight: 600 }}
+                />
               </Paper>
             </Grid>
           ))}
         </Grid>
       </Container>
 
+      {/* Features Section */}
+      <Box sx={{ bgcolor: 'grey.50', py: 8 }}>
+        <Container maxWidth="lg">
+          <Box sx={{ textAlign: 'center', mb: 6 }}>
+            <Typography variant="h2" component="h2" gutterBottom sx={{ fontWeight: 700 }}>
+              Why Choose Charity Ledger?
+            </Typography>
+            <Typography variant="h5" color="text.secondary" sx={{ maxWidth: 600, mx: 'auto' }}>
+              Built on blockchain technology for maximum transparency and trust
+            </Typography>
+          </Box>
+          
+          <Grid container spacing={4}>
+            {features.map((feature, index) => (
+              <Grid item xs={12} sm={6} md={3} key={index}>
+                <Card
+                  elevation={0}
+                  sx={{
+                    height: '100%',
+                    textAlign: 'center',
+                    p: 3,
+                    border: '1px solid rgba(0,0,0,0.08)',
+                    transition: 'all 0.3s ease-in-out',
+                    '&:hover': {
+                      transform: 'translateY(-4px)',
+                      boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+                    },
+                  }}
+                >
+                  <Box
+                    sx={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      width: 64,
+                      height: 64,
+                      borderRadius: '50%',
+                      bgcolor: 'primary.main',
+                      color: 'white',
+                      mb: 3,
+                    }}
+                  >
+                    {feature.icon}
+                  </Box>
+                  <Typography variant="h6" gutterBottom sx={{ fontWeight: 600 }}>
+                    {feature.title}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {feature.description}
+                  </Typography>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        </Container>
+      </Box>
+
       {/* Featured Projects Section */}
-      <Container maxWidth="lg" sx={{ py: 6 }}>
-        <Typography variant="h3" component="h2" textAlign="center" gutterBottom>
-          Featured Projects
-        </Typography>
-        <Typography variant="h6" textAlign="center" color="text.secondary" sx={{ mb: 6 }}>
-          Explore some of our most impactful, milestone-driven projects
-        </Typography>
+      <Container maxWidth="lg" sx={{ py: 8 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
+          <Box>
+            <Typography variant="h2" component="h2" gutterBottom sx={{ fontWeight: 700 }}>
+              Featured Projects
+            </Typography>
+            <Typography variant="h5" color="text.secondary">
+              Explore some of our most impactful, milestone-driven projects
+            </Typography>
+          </Box>
+          <Button
+            variant="outlined"
+            endIcon={<ArrowForward />}
+            onClick={() => navigate('/projects')}
+            sx={{ display: { xs: 'none', md: 'flex' } }}
+          >
+            View All Projects
+          </Button>
+        </Box>
+        
         <Grid container spacing={4}>
           {featuredProjects.map((project) => (
             <Grid item xs={12} md={4} key={project.id}>
-              <Card sx={{ borderRadius: 3, boxShadow: 3 }}>
-                <CardMedia
-                  component="img"
-                  height="180"
-                  image={project.image}
-                  alt={project.title}
-                />
-                <CardContent>
-                  <Typography variant="h6" gutterBottom>
-                    {project.title}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-                    {project.category} • {project.location}
-                  </Typography>
-                  <Typography variant="body2" sx={{ mb: 2 }}>
-                    {project.description}
-                  </Typography>
-                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                    <AttachMoney sx={{ fontSize: 18, mr: 0.5 }} />
-                    <Typography variant="body2">
-                      {`$${project.currentFunding.toLocaleString()} / $${project.fundingGoal.toLocaleString()}`}
+              <Card 
+                sx={{ 
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  transition: 'all 0.3s ease-in-out',
+                  '&:hover': {
+                    transform: 'translateY(-8px)',
+                    boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+                  },
+                }}
+              >
+                <Box sx={{ position: 'relative' }}>
+                  <CardMedia
+                    component="img"
+                    height="200"
+                    image={project.image}
+                    alt={project.title}
+                  />
+                  <Box
+                    sx={{
+                      position: 'absolute',
+                      top: 16,
+                      left: 16,
+                      display: 'flex',
+                      gap: 1,
+                    }}
+                  >
+                    <Chip
+                      label={project.category}
+                      size="small"
+                      sx={{ bgcolor: 'rgba(255,255,255,0.9)', fontWeight: 600 }}
+                    />
+                    <Chip
+                      label={`${project.daysLeft} days left`}
+                      size="small"
+                      color="warning"
+                      sx={{ fontWeight: 600 }}
+                    />
+                  </Box>
+                  <Box
+                    sx={{
+                      position: 'absolute',
+                      top: 16,
+                      right: 16,
+                      display: 'flex',
+                      gap: 1,
+                    }}
+                  >
+                    <IconButton size="small" sx={{ bgcolor: 'rgba(255,255,255,0.9)' }}>
+                      <Favorite />
+                    </IconButton>
+                    <IconButton size="small" sx={{ bgcolor: 'rgba(255,255,255,0.9)' }}>
+                      <Share />
+                    </IconButton>
+                  </Box>
+                </Box>
+                
+                <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
+                    <Star sx={{ color: 'warning.main', fontSize: 20 }} />
+                    <Typography variant="body2" fontWeight={600}>
+                      {project.rating}
                     </Typography>
                   </Box>
-                  <LinearProgress
-                    variant="determinate"
-                    value={Math.min((project.currentFunding / project.fundingGoal) * 100, 100)}
-                    sx={{ height: 8, borderRadius: 4, mb: 1 }}
-                  />
-                  <Box sx={{ display: 'flex', gap: 1, alignItems: 'center', mb: 1 }}>
+                  
+                  <Typography variant="h6" gutterBottom sx={{ fontWeight: 600, lineHeight: 1.3 }}>
+                    {project.title}
+                  </Typography>
+                  
+                  <Typography variant="body2" color="text.secondary" sx={{ mb: 2, flexGrow: 1 }}>
+                    {project.description}
+                  </Typography>
+                  
+                  <Box sx={{ mb: 2 }}>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+                      <Typography variant="body2" color="text.secondary">
+                        ${project.currentFunding.toLocaleString()} raised
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        ${project.fundingGoal.toLocaleString()} goal
+                      </Typography>
+                    </Box>
+                    <LinearProgress
+                      variant="determinate"
+                      value={Math.min((project.currentFunding / project.fundingGoal) * 100, 100)}
+                      sx={{ height: 8, borderRadius: 4 }}
+                    />
+                  </Box>
+                  
+                  <Box sx={{ display: 'flex', gap: 1, alignItems: 'center', mb: 2 }}>
                     <Chip label={`${project.milestones} Milestones`} size="small" color="primary" />
                     <Chip label={`${project.validators} Validators`} size="small" color="success" />
                   </Box>
+                  
+                  <Box sx={{ display: 'flex', gap: 1, mt: 'auto' }}>
+                    <Button
+                      variant="contained"
+                      fullWidth
+                      onClick={() => navigate(`/projects/${project.id}`)}
+                    >
+                      View Details
+                    </Button>
+                    <Button
+                      variant="outlined"
+                      fullWidth
+                      onClick={() => navigate(`/projects/${project.id}?donate=true`)}
+                    >
+                      Donate
+                    </Button>
+                  </Box>
                 </CardContent>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', p: 2, pt: 0 }}>
-                  <Button
-                    variant="contained"
-                    size="small"
-                    onClick={() => navigate(`/projects/${project.id}`)}
-                  >
-                    View Details
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    size="small"
-                    onClick={() => navigate(`/projects/${project.id}?donate=true`)}
-                  >
-                    Donate
-                  </Button>
-                </Box>
               </Card>
             </Grid>
           ))}
         </Grid>
+        
+        <Box sx={{ textAlign: 'center', mt: 4 }}>
+          <Button
+            variant="contained"
+            size="large"
+            endIcon={<ArrowForward />}
+            onClick={() => navigate('/projects')}
+            sx={{ display: { xs: 'flex', md: 'none' } }}
+          >
+            View All Projects
+          </Button>
+        </Box>
       </Container>
 
       {/* Testimonials Section */}
-      <Container maxWidth="lg" sx={{ py: 6 }}>
-        <Typography variant="h3" component="h2" textAlign="center" gutterBottom>
-          What Our Users Say
-        </Typography>
-        <Typography variant="h6" textAlign="center" color="text.secondary" sx={{ mb: 6 }}>
-          Real stories from donors, validators, and project creators
-        </Typography>
-        <Grid container spacing={4} justifyContent="center">
-          <Grid item xs={12} md={4}>
-            <Paper elevation={3} sx={{ p: 4, borderRadius: 3, textAlign: 'center' }}>
-              <Typography variant="body1" sx={{ mb: 2 }}>
-                "I love being able to see exactly how my donation is used. The milestone system and validator transparency are game changers!"
-              </Typography>
-              <Typography variant="subtitle1" fontWeight={700}>
-                — Priya S., Donor
-              </Typography>
-            </Paper>
+      <Box sx={{ bgcolor: 'grey.50', py: 8 }}>
+        <Container maxWidth="lg">
+          <Typography variant="h2" component="h2" textAlign="center" gutterBottom sx={{ fontWeight: 700 }}>
+            What Our Users Say
+          </Typography>
+          <Typography variant="h5" textAlign="center" color="text.secondary" sx={{ mb: 6, maxWidth: 600, mx: 'auto' }}>
+            Real stories from donors, validators, and project creators
+          </Typography>
+          
+          <Grid container spacing={4} justifyContent="center">
+            {[
+              {
+                quote: "I love being able to see exactly how my donation is used. The milestone system and validator transparency are game changers!",
+                author: "Priya S.",
+                role: "Donor",
+                avatar: "PS",
+                rating: 5,
+              },
+              {
+                quote: "As a validator, I feel empowered to make a real difference in my community and ensure funds are used responsibly.",
+                author: "Samuel K.",
+                role: "Validator",
+                avatar: "SK",
+                rating: 5,
+              },
+              {
+                quote: "Launching our project on this platform was seamless, and the support from validators and donors has been incredible.",
+                author: "Maria G.",
+                role: "Project Creator",
+                avatar: "MG",
+                rating: 5,
+              },
+            ].map((testimonial, index) => (
+              <Grid item xs={12} md={4} key={index}>
+                <Paper 
+                  elevation={0}
+                  sx={{ 
+                    p: 4, 
+                    borderRadius: 3, 
+                    textAlign: 'center',
+                    border: '1px solid rgba(0,0,0,0.08)',
+                    height: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    transition: 'all 0.3s ease-in-out',
+                    '&:hover': {
+                      transform: 'translateY(-4px)',
+                      boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+                    },
+                  }}
+                >
+                  <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
+                    {[...Array(testimonial.rating)].map((_, i) => (
+                      <Star key={i} sx={{ color: 'warning.main', fontSize: 20 }} />
+                    ))}
+                  </Box>
+                  
+                  <Typography variant="body1" sx={{ mb: 3, flexGrow: 1, fontStyle: 'italic' }}>
+                    "{testimonial.quote}"
+                  </Typography>
+                  
+                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2 }}>
+                    <Avatar
+                      sx={{
+                        bgcolor: 'primary.main',
+                        width: 48,
+                        height: 48,
+                        fontSize: '1.1rem',
+                        fontWeight: 600,
+                      }}
+                    >
+                      {testimonial.avatar}
+                    </Avatar>
+                    <Box>
+                      <Typography variant="subtitle1" fontWeight={600}>
+                        {testimonial.author}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {testimonial.role}
+                      </Typography>
+                    </Box>
+                  </Box>
+                </Paper>
+              </Grid>
+            ))}
           </Grid>
-          <Grid item xs={12} md={4}>
-            <Paper elevation={3} sx={{ p: 4, borderRadius: 3, textAlign: 'center' }}>
-              <Typography variant="body1" sx={{ mb: 2 }}>
-                "As a validator, I feel empowered to make a real difference in my community and ensure funds are used responsibly."
-              </Typography>
-              <Typography variant="subtitle1" fontWeight={700}>
-                — Samuel K., Validator
-              </Typography>
-            </Paper>
-          </Grid>
-          <Grid item xs={12} md={4}>
-            <Paper elevation={3} sx={{ p: 4, borderRadius: 3, textAlign: 'center' }}>
-              <Typography variant="body1" sx={{ mb: 2 }}>
-                "Launching our project on this platform was seamless, and the support from validators and donors has been incredible."
-              </Typography>
-              <Typography variant="subtitle1" fontWeight={700}>
-                — Maria G., Project Creator
-              </Typography>
-            </Paper>
-          </Grid>
-        </Grid>
-      </Container>
+        </Container>
+      </Box>
     </Box>
   );
 };
