@@ -29,17 +29,9 @@ import {
   IconButton,
   Tooltip,
   Badge,
-  InputAdornment
+  InputAdornment,
+  Stack
 } from '@mui/material';
-import {
-  Timeline,
-  TimelineItem,
-  TimelineSeparator,
-  TimelineConnector,
-  TimelineContent,
-  TimelineDot,
-  TimelineOppositeContent
-} from '@mui/lab';
 import {
   LocationOn,
   People,
@@ -472,29 +464,16 @@ const ProjectDetail: React.FC = () => {
                 <Typography variant="h6" gutterBottom>
                   Recent Activity
                 </Typography>
-                <Timeline>
+                <Stack direction="row" spacing={2}>
                   {project.milestones.slice(0, 3).map((milestone) => (
-                    <TimelineItem key={milestone.id}>
-                      <TimelineOppositeContent sx={{ m: 'auto 0' }} variant="body2" color="text.secondary">
-                        {formatDate(milestone.dueDate)}
-                      </TimelineOppositeContent>
-                      <TimelineSeparator>
-                        <TimelineDot color={milestone.isCompleted ? 'success' : 'primary'} />
-                        <TimelineConnector />
-                      </TimelineSeparator>
-                      <TimelineContent>
-                        <Typography variant="body2">
-                          {milestone.title}
-                        </Typography>
-                        {milestone.isCompleted && (
-                          <Typography variant="caption" color="success.main">
-                            Completed
-                          </Typography>
-                        )}
-                      </TimelineContent>
-                    </TimelineItem>
+                    <Chip
+                      key={milestone.id}
+                      label={milestone.title}
+                      color={milestone.isCompleted ? 'success' : 'primary'}
+                      variant={milestone.isCompleted ? 'filled' : 'outlined'}
+                    />
                   ))}
-                </Timeline>
+                </Stack>
               </CardContent>
             </Card>
           </Grid>

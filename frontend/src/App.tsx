@@ -1,8 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider, createTheme, CssBaseline, Box } from '@mui/material';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
 // Components
 import Navbar from './components/Navbar';
@@ -175,27 +173,25 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <Router>
-          <Box sx={{ 
-            minHeight: '100vh',
-            background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)',
-          }}>
-            <Navbar />
-            <Box component="main" sx={{ pt: { xs: 8, md: 9 } }}>
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/projects" element={<Projects />} />
-                <Route path="/projects/:id" element={<ProjectDetail />} />
-                <Route path="/create-project" element={<CreateProject />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/validator-dashboard" element={<ValidatorDashboard />} />
-                <Route path="/impact-map" element={<ImpactMap />} />
-              </Routes>
-            </Box>
+      <Router>
+        <Box sx={{ 
+          minHeight: '100vh',
+          background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)',
+        }}>
+          <Navbar />
+          <Box component="main" sx={{ pt: { xs: 8, md: 9 } }}>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/projects" element={<Projects />} />
+              <Route path="/projects/:id" element={<ProjectDetail />} />
+              <Route path="/create-project" element={<CreateProject />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/validator-dashboard" element={<ValidatorDashboard />} />
+              <Route path="/impact-map" element={<ImpactMap />} />
+            </Routes>
           </Box>
-        </Router>
-      </LocalizationProvider>
+        </Box>
+      </Router>
     </ThemeProvider>
   );
 }
